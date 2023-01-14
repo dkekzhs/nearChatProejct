@@ -12,6 +12,9 @@ import com.facebook.soloader.SoLoader;
 import com.frontend.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import android.content.Intent;
+import android.os.Bundle;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -56,7 +59,9 @@ public class MainApplication extends Application implements ReactApplication {
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
   }
+
 
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
