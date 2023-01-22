@@ -2,10 +2,7 @@ package com.dongjae.nearChatProejct.User;
 
 
 import com.dongjae.nearChatProejct.Common.Security.JwtTokenProvider;
-import com.dongjae.nearChatProejct.User.Dto.UserSignRequestDto;
-import com.dongjae.nearChatProejct.User.Dto.UserResponseDto;
-import com.dongjae.nearChatProejct.User.Dto.UserSignInResponseDto;
-import com.dongjae.nearChatProejct.User.Dto.UserSignUpRequestDto;
+import com.dongjae.nearChatProejct.User.Dto.*;
 import com.dongjae.nearChatProejct.User.Service.UserService;
 import com.dongjae.nearChatProejct.User.domain.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +20,7 @@ public class UserController {
     @GetMapping("/check")
     public ResponseEntity<UserResponseDto> findByDeviceId(@AuthenticationPrincipal UserEntity user) {
         return ResponseEntity.ok(
-                new UserResponseDto(userService.findByDeviceId(user.getDeviceId()))
+                new UserResponseDto(userService.findByDeviceId(user.getDeviceId()),200)
         );
     }
 
@@ -32,7 +29,7 @@ public class UserController {
         UserEntity userEntity = userService.LoginCheck(dto.getDeviceId(), dto.getName());
         String token = jwtTokenProvider.CreateToken(userEntity);
         return ResponseEntity.ok(
-                new UserSignInResponseDto(token)
+                new UserSignInResponseDto(token,200)
         );
     }
 
@@ -42,7 +39,14 @@ public class UserController {
         userService.CheckDeviceIdAndNickNameOrThr(dto.getDeviceId(), dto.getName());
         userService.CreateUser(dto.ToEntity(dto.getDeviceId()));
         return ResponseEntity.ok(
-                new UserResponseDto(userService.findByDeviceId(dto.getDeviceId()))
+                new UserResponseDto(userService.findByDeviceId(dto.getDeviceId()),200)
+        );
+    }
+    @PostMapping("/device-check")
+    public ResponseEntity<UserResponseDto> deviceCheck(@RequestBody UserDeviceResponseDto dto){
+        userService.findByDeviceId(dto.getDeviceId());
+        return ResponseEntity.ok(
+                new UserResponseDto(userService.findByDeviceId(dto.getDeviceId()),200)
         );
     }
 
