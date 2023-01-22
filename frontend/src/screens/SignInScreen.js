@@ -5,15 +5,13 @@ import SignUp from '~/utils/SignUp';
 import {
   View,
   Text,
-  Pressable,
-  Image,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
   TextInput,
 } from 'react-native';
 
-const SignInScreen = () => {
+const SignInScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [userDeviceId, setDeviceId] = useState('');
   useEffect(() => {
@@ -41,7 +39,8 @@ const SignInScreen = () => {
         <TouchableOpacity
           style={styles.signUpButton}
           onPress={() => {
-            SignUp(userDeviceId, username);
+            SignUp(userDeviceId, username),
+              navigation.navigate('LocationScreen');
           }}>
           <Text>시작하기</Text>
         </TouchableOpacity>

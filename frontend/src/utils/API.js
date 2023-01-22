@@ -1,12 +1,11 @@
 const API = ID => {
-  const getID = fetch('http://127.0.0.1:8080' + '/user/sign-in', {
+  const getID = fetch('http://127.0.0.1:8080' + '/user/device-check', {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
     },
     body: JSON.stringify({
       deviceId: ID,
-      name: '33333333313122123313',
     }),
   })
     .then(response => response.json())
