@@ -348,6 +348,8 @@ PODS:
     - React-Core
   - react-native-network-info (5.2.1):
     - React
+  - react-native-splash-screen (3.3.0):
+    - React-Core
   - React-perflogger (0.70.6)
   - React-RCTActionSheet (0.70.6):
     - React-Core/RCTActionSheetHeaders (= 0.70.6)
@@ -414,6 +416,8 @@ PODS:
     - React-jsi (= 0.70.6)
     - React-logger (= 0.70.6)
     - React-perflogger (= 0.70.6)
+  - RNCAsyncStorage (1.17.11):
+    - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
   - RNPermissions (3.6.1):
@@ -495,6 +499,7 @@ DEPENDENCIES:
   - react-native-location (from `../node_modules/react-native-location`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-network-info (from `../node_modules/react-native-network-info`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -507,6 +512,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNWifi (from `../node_modules/react-native-wifi-reborn`)
@@ -619,6 +625,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-network-info:
     :path: "../node_modules/react-native-network-info"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -643,6 +651,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNPermissions:
@@ -710,6 +720,7 @@ SPEC CHECKSUMS:
   react-native-location: 5a40ec1cc6abf2f6d94df979f98ec76c3a415681
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
   react-native-network-info: d1290ffc0bd0709e11436f5b8d7f605dcc5c4530
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
   React-RCTAnimation: 5341e288375451297057391227f691d9b2326c3d
@@ -722,6 +733,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: c75ceef7aa60a33b2d5731ebe5800ddde40cefc4
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
+  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNWifi: 94c5dd913df64acbd5024f051552ffdd1681642d

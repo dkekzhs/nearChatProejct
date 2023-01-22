@@ -7,85 +7,48 @@
  * @flow strict-local
  */
 
-import React, {useState, useEffect} from 'react';
+import * as React from 'react';
+import {useState, useEffect} from 'react';
 import type {Node} from 'react';
 import {StyleSheet, Text, View, Button, SafeAreaView} from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import Geolocation from 'react-native-geolocation-service';
 import {Platform} from 'react-native';
-import {
-  check,
-  PERMISSIONS,
-  RESULTS,
-  request,
-  requestMultiple,
-} from 'react-native-permissions';
-
-async function requestPermission() {
-  try {
-    if (Platform.OS === 'ios') {
-      return await Geolocation.requestAuthorization('always');
-    }
-    if (Platform.OS === 'android') {
-      return await requestMultiple([
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-      ]);
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
+import {NavigationContainer} from '@react-navigation/native'; // 네비게이션 컨테이너
+import StackNavigation from './src/components/navigations/StackNavigation';
+import SplashScreen from 'react-native-splash-screen'; /** 추가 **/
+import LocationScreen from './src/screens/LocationScreen';
+import API from './src/utils/API';
+import SignInScreen from './src/screens/SignInScreen';
+import getDeviceId from '~/utils/getDeviceId';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
+
 const App: () => Node = () => {
   const [DeviceId, setDeviceId] = useState('initialValue1');
-  const [location, setLocation] = useState();
-  DeviceInfo.getUniqueId().then(uniqueId => {
-    setDeviceId(uniqueId);
-  });
-
+  const [loginCheck, setLoginCheck] = useState('');
+  const [code, setCode] = useState(false);
   useEffect(() => {
-    requestPermission().then(result => {
-      if (
-        result === 'granted' ||
-        result['android.permission.ACCESS_BACKGROUND_LOCATION'] === 'granted'
-      ) {
-        Geolocation.watchPosition(
-          pos => {
-            console.log(pos);
-            setLocation({lat: pos.coords.latitude, lng: pos.coords.longitude});
-          },
-          error => {
-            console.log(error);
-          },
-          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-        );
-      }
-    });
-  }, []);
+    try {
+      setTimeout(() => {
+        console.log(API(getDeviceId()._j));
+        setLoginCheck(API(getDeviceId()._j).code);
+        if (loginCheck === 'USER_NOT_FOUND' || loginCheck === 'undefined') {
+          setCode(true);
+        } else {
+          setCode(false);
+        }
+        SplashScreen.hide(); /** 추가 **/
+      }, 2000); /** 스플래시 시간 조절 (2초) **/
+    } catch (e) {
+      console.warn('에러발생');
+      console.warn(e);
+    }
+  },[]);
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{DeviceId}</Text>
-      <Text>{location?.lat}</Text>
-      <Text>{location?.lng}</Text>
-    </View>
-  );
+  <NavigationContainer>
+    <StackNavigation />
+  </NavigationContainer>;
+  return code ? <LocationScreen /> : <SignInScreen />;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-  },
-  title: {
-    fontSize: 30,
-  },
-});
 
 export default App;
