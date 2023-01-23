@@ -9,11 +9,13 @@ public class UserResponseDto {
     private String deviceId;
     private String name;
     private UserRole role;
+    private int status;
 
 
-    public UserResponseDto(UserEntity user) {
+    public UserResponseDto(UserEntity user, int status) {
         this.deviceId = user.getDeviceId();
         this.name = user.getName();
         this.role = user.getRole();
+        this.status = status;
     }
 }
