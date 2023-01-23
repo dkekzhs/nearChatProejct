@@ -1,24 +1,65 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import getDeviceId from '~/utils/getDeviceId';
-import SignUp from '~/utils/SignUp';
+import DeviceInfo from 'react-native-device-info';
 import {
   View,
   Text,
-  Pressable,
-  Image,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import {IdCheck, SignUp, SignIn} from '~/utils/UserAPI';
+import {isEmpty, getItemFromAsync, setItemToAsync} from '~/utils/asyncStorge';
 
-const SignInScreen = () => {
+const SignInScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [userDeviceId, setDeviceId] = useState('');
+  const [SignUpData, setSignUpData] = useState('');
+
   useEffect(() => {
-    setDeviceId(getDeviceId()._j);
-  }, []);
+    DeviceInfo.getUniqueId().then(res => {
+      setDeviceId(res);
+      LoginCheck(res);
+    });
+    setTimeout(() => {}, 200);
+  }, [SignUpData, userDeviceId]);
+  const LoginCheck = res => {
+    IdCheck(res).then(res2 => {
+      if (res2?.status === 200 && !isEmpty('token')) {
+        navigation.navigate('home');
+      } else {
+        navigation.navigate('signin');
+      }
+    });
+  };
+  const gotoMain = (userID, userName) => {
+    SignCheck(userID, userName).then(res => {
+      setSignUpData(res);
+      console.log(SignUpData, userID, userName);
+      if (res?.status === 200) {
+        SignInCheck(userID, userName);
+        navigation.navigate('home');
+      } else {
+        navigation.navigate('signin');
+      }
+    }); //회원가입 체크 성공적이면 토큰 발행
+  };
+
+  const SignCheck = async (DeviceId, UserName) => {
+    const data = await SignUp(DeviceId, UserName);
+    return data;
+  };
+
+  const SignInCheck = (DeviceId, UserName) => {
+    SignIn(DeviceId, UserName).then(res3 => {
+      if (res3?.status === 200) {
+        setItemToAsync('token', res3?.token);
+      } else {
+        return Error('토큰 값 없어요');
+      }
+    });
+  };
   return (
     <SafeAreaView>
       <View style={styles.signInTextContainer}>
@@ -41,10 +82,13 @@ const SignInScreen = () => {
         <TouchableOpacity
           style={styles.signUpButton}
           onPress={() => {
-            SignUp(userDeviceId, username);
+            gotoMain(userDeviceId, username);
           }}>
           <Text>시작하기</Text>
         </TouchableOpacity>
+      </View>
+      <View style={styles.form}>
+        <Text style={styles.signInTextError}>{SignUpData?.message}</Text>
       </View>
     </SafeAreaView>
   );
@@ -59,6 +103,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#000000',
     lineHeight: 29.3,
+  },
+  signInTextError: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#FF0000',
+    lineHeight: 29.3,
+    alignItems: 'center',
   },
   signInTextS: {
     fontSize: 12,

@@ -20,7 +20,8 @@ import {
   request,
   requestMultiple,
 } from 'react-native-permissions';
-
+import {getItemFromAsync, setItemToAsync} from '~/utils/asyncStorge';
+import {TokenCheck, SignIn} from '~/utils/UserAPI';
 async function requestPermission() {
   try {
     if (Platform.OS === 'ios') {
@@ -37,16 +38,28 @@ async function requestPermission() {
     console.log(e);
   }
 }
-
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
+const SignInCheck = (DeviceId, UserName) => {
+  SignIn(DeviceId, UserName).then(res3 => {
+    if (res3?.status === 200) {
+      setItemToAsync('token', res3?.token);
+    } else {
+      return Error('토큰 값 없어요');
+    }
+  });
+};
 const LocationPage: () => Node = () => {
   const [DeviceId, setDeviceId] = useState('initialValue1');
   const [location, setLocation] = useState();
+  getItemFromAsync('token').then(res => {
+    TokenCheck(res).then(res => {
+      if (res?.status !== 200) {
+        SignInCheck(res?.deviceId, res?.name);
+      }
+    });
+  });
   DeviceInfo.getUniqueId().then(uniqueId => {
     setDeviceId(uniqueId);
   });
-
   useEffect(() => {
     requestPermission().then(result => {
       if (

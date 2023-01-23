@@ -10,45 +10,57 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
 import type {Node} from 'react';
-import {StyleSheet, Text, View, Button, SafeAreaView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  SafeAreaView,
+  Alert,
+  BackHandler,
+} from 'react-native';
 import {Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native'; // 네비게이션 컨테이너
-import StackNavigation from './src/components/navigations/StackNavigation';
+import StackNavigation from '~/components/navigations/StackNavigation';
 import SplashScreen from 'react-native-splash-screen'; /** 추가 **/
-import LocationScreen from './src/screens/LocationScreen';
-import API from './src/utils/API';
-import SignInScreen from './src/screens/SignInScreen';
-import getDeviceId from '~/utils/getDeviceId';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
 
 const App: () => Node = () => {
-  const [DeviceId, setDeviceId] = useState('initialValue1');
-  const [loginCheck, setLoginCheck] = useState('');
-  const [code, setCode] = useState(false);
   useEffect(() => {
-    try {
-      setTimeout(() => {
-        console.log(API(getDeviceId()._j));
-        setLoginCheck(API(getDeviceId()._j).code);
-        if (loginCheck === 'USER_NOT_FOUND' || loginCheck === 'undefined') {
-          setCode(true);
-        } else {
-          setCode(false);
-        }
-        SplashScreen.hide(); /** 추가 **/
-      }, 2000); /** 스플래시 시간 조절 (2초) **/
-    } catch (e) {
-      console.warn('에러발생');
-      console.warn(e);
-    }
-  },[]);
+    const backAction = () => {
+      Alert.alert('Hold on!', '앱을 종료하시겠습니까?', [
+        {
+          text: '취소',
+          onPress: () => null,
+        },
+        {text: '확인', onPress: () => BackHandler.exitApp()},
+        ,
+      ]);
+      return true;
+    };
 
-  <NavigationContainer>
-    <StackNavigation />
-  </NavigationContainer>;
-  return code ? <LocationScreen /> : <SignInScreen />;
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+  try {
+    setTimeout(() => {
+      SplashScreen.hide(); /** 추가 **/
+    }, 2000);
+  } catch (e) {
+    console.warn('에러발생');
+    console.warn(e);
+  }
+  return (
+    <NavigationContainer>
+      <StackNavigation />
+    </NavigationContainer>
+  );
 };
 
 export default App;
