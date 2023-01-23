@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const isEmpty = function (value) {
+export const isEmpty = function (value) {
   if (
     value === '' ||
     value === null ||
