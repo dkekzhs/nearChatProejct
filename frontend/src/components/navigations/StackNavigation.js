@@ -1,9 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import LocationScreen from '~/screens/LocationScreen';
 import SignInScreen from '~/screens/SignInScreen';
-
+import MainScreen from './BottomNavigation';
 const Stack = createNativeStackNavigator();
 
 const StackNavigation = () => {
@@ -11,7 +10,7 @@ const StackNavigation = () => {
     <Stack.Navigator initialRouteName="signin">
       <Stack.Screen
         name="home"
-        component={LocationScreen}
+        component={MainScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
