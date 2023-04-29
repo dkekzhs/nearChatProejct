@@ -1,6 +1,6 @@
 package com.dongjae.nearChatProejct.Chat.dto;
 
-import com.dongjae.nearChatProejct.User.domain.UserEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,14 +8,16 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RoomRequestDto {
-    private String name;
+public class UserCoordinateReqeustDto {
     private Double lat;
-    private  Double lot;
+    private Double lot;
+    private int radius;
+
     @Builder
-    public RoomRequestDto(String name,Double lat, Double lot) {
+
+    public UserCoordinateReqeustDto(Double lat, Double lot, int radius) {
         this.lat = lat;
         this.lot = lot;
-        this.name = name;
+        this.radius = radius;
     }
 }

@@ -1,5 +1,6 @@
 package com.dongjae.nearChatProejct.Common.Error.Exception;
 
+import com.dongjae.nearChatProejct.Chat.exception.ChatRoomNotFoundException;
 import com.dongjae.nearChatProejct.Common.Error.Exception.jwt.ExpiredTokenException;
 import com.dongjae.nearChatProejct.Common.Error.Exception.jwt.InvalidTokenException;
 import com.dongjae.nearChatProejct.Common.Error.Exception.jwt.WrongTokenException;
@@ -30,7 +31,8 @@ public enum ErrorCode {
     UNAUTHORIZED_REQUEST(FORBIDDEN,"허가되지 않은 요청입니다.", UnauthorizedRequestException.class),
 
     /*404 에러 */
-    CLASS_NOT_FOUND(NOT_FOUND, "에러 클래스를 찾을 수 없습니다", NotFoundClassException.class);
+    CLASS_NOT_FOUND(NOT_FOUND, "에러 클래스를 찾을 수 없습니다.", NotFoundClassException.class),
+    CHAT_ROOM_NOT_FOUND(NOT_FOUND, "채팅방이 존재하지 않습니다.", ChatRoomNotFoundException.class);
     private final HttpStatus httpStatus;
     private final String message;
     private final Class<? extends Exception> klass;

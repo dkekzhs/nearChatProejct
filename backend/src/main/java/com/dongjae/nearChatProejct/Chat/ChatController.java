@@ -2,13 +2,16 @@ package com.dongjae.nearChatProejct.Chat;
 
 import com.dongjae.nearChatProejct.Chat.domain.ChatRoom;
 import com.dongjae.nearChatProejct.Chat.domain.Message;
+import com.dongjae.nearChatProejct.Chat.dto.ChatRoomsListResponseDto;
 import com.dongjae.nearChatProejct.Chat.dto.RoomRequestDto;
 import com.dongjae.nearChatProejct.Chat.dto.RoomResponseDto;
+import com.dongjae.nearChatProejct.Chat.dto.UserCoordinateReqeustDto;
 import com.dongjae.nearChatProejct.Chat.service.ChatRoomService;
 import com.dongjae.nearChatProejct.Chat.service.MessageService;
 import com.dongjae.nearChatProejct.User.Dto.UserResponseDto;
 import com.dongjae.nearChatProejct.User.Service.UserService;
 import com.dongjae.nearChatProejct.User.domain.UserEntity;
+import com.dongjae.nearChatProejct.User.domain.UserLatLotEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -18,6 +21,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -46,5 +50,13 @@ public class ChatController {
                         .sender(message.getSender()).build()
         );
         return test;
+    }
+
+    @GetMapping("/chatRoomList")
+    public ResponseEntity<ChatRoomsListResponseDto> selectRoom(@AuthenticationPrincipal UserEntity user,
+    @RequestBody UserCoordinateReqeustDto dto){
+        List<ChatRoom> chatRooms = chatRoomService.searchChatRoom(dto);
+        return ResponseEntity.ok(new ChatRoomsListResponseDto<>(chatRooms, 200));
+
     }
 }

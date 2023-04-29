@@ -14,7 +14,6 @@ public class UserSignUpRequestDto {
     private String deviceId;
     private String name;
     private UserRole role;
-
     public UserSignUpRequestDto(String deviceId, String name,UserRole role) {
         this.deviceId = deviceId;
         this.name = name;
