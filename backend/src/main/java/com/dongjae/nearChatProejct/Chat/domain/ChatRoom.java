@@ -16,14 +16,22 @@ import java.util.List;
 public class ChatRoom extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="room_id")
+    @Column(name ="roomId")
     private Long id;
 
     @Column(nullable = false,unique = false)
     private String name;
 
+    @Column(nullable = false , unique = false)
+    private Double lat;
+
+    @Column(nullable = false , unique = false)
+    private Double lot;
+
     @Builder
-    public ChatRoom(String name) {
+    public ChatRoom(String name,Double lat,Double lot) {
         this.name = name;
+        this.lat = lat;
+        this.lot = lot;
     }
 }

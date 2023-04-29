@@ -1,6 +1,8 @@
 package com.dongjae.nearChatProejct.User.Service;
 
 import com.dongjae.nearChatProejct.User.domain.UserEntity;
+import com.dongjae.nearChatProejct.User.domain.UserLatLotEntity;
+import com.dongjae.nearChatProejct.User.domain.UserLatLotRepository;
 import com.dongjae.nearChatProejct.User.domain.UserRepository;
 import com.dongjae.nearChatProejct.User.exception.*;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
+    private final UserLatLotRepository userLatLotRepository;
     @Transactional
     public UserEntity CreateUser(UserEntity user){
         this.userRepository.save(user);
@@ -62,5 +64,35 @@ public class UserService {
             throw new UserNotFoundException();
         }
     }
+    public void CreateCoordinate(String deviceId, UserLatLotEntity userLatLot){
+        Optional<UserEntity> id = this.userRepository.findByDeviceId(deviceId);
+        if(id.isPresent()){
+            UserLatLotEntity latlot = UserLatLotEntity.builder().userEntity(id.get()).radius(userLatLot.getRadius()).lat(userLatLot.getLat()).lot(userLatLot.getLot()).build();
+            this.userLatLotRepository.save(latlot);
+        }
+        else{
+            throw new UserNotFoundException();
+        }
+
+
+
+    }
+    public void UpdateCoordinate(String deviceId,Double lat, Double lot){
+        Optional<UserEntity> id = this.userRepository.findByDeviceId(deviceId);
+        if(id.isPresent()){
+            Optional<UserLatLotEntity> byuser_idx = this.userLatLotRepository.findByUserEntity_Id(id.get().getId());
+            if(byuser_idx.isPresent()){
+                byuser_idx.get().UpdateCoordinate(lat, lot);
+                this.userLatLotRepository.save(byuser_idx.get());
+            }
+        }
+        else {
+            throw new UserNotFoundException();
+        }
+
+
+    }
+
+
 
 }

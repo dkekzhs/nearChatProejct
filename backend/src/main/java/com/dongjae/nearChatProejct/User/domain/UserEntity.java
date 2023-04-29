@@ -25,10 +25,14 @@ public class UserEntity {
     @Column(nullable = false)
     private UserRole role;
 
+
+    @OneToOne(mappedBy = "userEntity")
+    private  UserLatLotEntity userLatLotEntity;
     @Builder
-    public UserEntity(String deviceId, String name,UserRole role) {
+    public UserEntity(String deviceId, String name,UserRole role,UserLatLotEntity userLatLotEntity) {
         this.deviceId = deviceId;
         this.name = name;
         this.role = role;
+        this.userLatLotEntity = userLatLotEntity;
     }
 }

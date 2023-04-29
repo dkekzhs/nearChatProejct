@@ -1,9 +1,12 @@
 package com.dongjae.nearChatProejct.Chat.dto;
 
+import com.dongjae.nearChatProejct.Chat.domain.ChatRoom;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,4 +19,5 @@ public class RoomResponseDto {
         this.name = name;
         this.status = status;
     }
+
 }
