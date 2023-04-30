@@ -9,7 +9,15 @@
  */
 import React, {useState, useEffect} from 'react';
 import type {Node} from 'react';
-import {StyleSheet, Text, View, Button, SafeAreaView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Geolocation from 'react-native-geolocation-service';
 import {Platform} from 'react-native';
@@ -50,6 +58,7 @@ const SignInCheck = (DeviceId, UserName) => {
 const LocationPage: () => Node = () => {
   const [DeviceId, setDeviceId] = useState('initialValue1');
   const [location, setLocation] = useState();
+  const [radius, setRadius] = useState(3);
   getItemFromAsync('token').then(res => {
     TokenCheck(res).then(res => {
       if (res?.status !== 200) {
@@ -81,23 +90,63 @@ const LocationPage: () => Node = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{DeviceId}</Text>
-      <Text>{location?.lat}</Text>
-      <Text>{location?.lng}</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.one}>
+        <Text style={styles.title}>{DeviceId}</Text>
+        <Text>{location?.lat}</Text>
+        <Text>{location?.lng}</Text>
+      </View>
+      <View style={styles.two}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="볼 채팅방 거리를 입력해주세요 단위 m"
+          value={radius}
+          onChangeText={setRadius}
+        />
+        <TouchableOpacity
+          style={styles.signUpButton}
+          onPress={() => {
+            AccpetRadius(location, radius);
+          }}>
+          <Text style={styles.Text}>적용하기</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: 'black',
   },
   title: {
-    fontSize: 30,
+    fontSize: 20,
+    justifyContent: 'center',
+  },
+  one: {
+    flex: 2,
+    backgroundColor: 'yellow',
+  },
+  two: {
+    flex: 3,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  signUpButton: {
+    width: '20%',
+    height: '10%',
+    borderRadius: 15,
+    borderWidth: 1,
+    justifyContent: 'center',
+  },
+  textInput: {
+    width: '80%',
+    height: '10%',
+    backgroundColor: '#d9d9d9',
+    borderRadius: 10,
+    fontSize: 20,
   },
 });
 
