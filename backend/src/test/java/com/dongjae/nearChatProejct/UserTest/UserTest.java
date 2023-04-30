@@ -28,7 +28,7 @@ public class UserTest {
         Double lat =123.3;
         Double lot = 1234.3;
         userService.CreateUser(build);
-        userService.CreateCoordinate(build.getDeviceId(),build1);
+        userService.CreateCoordinate(build1);
         userService.UpdateCoordinate("123",lat,lot);
 
 

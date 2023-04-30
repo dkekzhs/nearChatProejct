@@ -1,5 +1,6 @@
 package com.dongjae.nearChatProejct.Common.Error.Exception;
 
+import com.dongjae.nearChatProejct.Chat.exception.ChatRoomCreateException;
 import com.dongjae.nearChatProejct.Chat.exception.ChatRoomNotFoundException;
 import com.dongjae.nearChatProejct.Common.Error.Exception.jwt.ExpiredTokenException;
 import com.dongjae.nearChatProejct.Common.Error.Exception.jwt.InvalidTokenException;
@@ -22,6 +23,7 @@ public enum ErrorCode {
     USER_BLANK_NICKNAME(BAD_REQUEST,"아이디를 입력하지 않았습니다.", UserBlankNickName.class),
     USER_NAMEID_ALREDY(BAD_REQUEST, "이미 존재하는 이름입니다.", UserAlreadyNameId.class),
     USER_NOTMATCH_NAME(BAD_REQUEST, "디바이스 아이디와 이름이 일치하지 않습니다.", UserNotMatchName.class),
+    CREATE_CHAT_ROOM_ERROR(BAD_REQUEST, "채팅방을 생성하는 중 오류가 발생했습니다. ", ChatRoomCreateException.class),
     EXPIRED_TOKEN(BAD_REQUEST, "만료된 토큰입니다", ExpiredTokenException.class),
     INVALID_TOKEN(BAD_REQUEST, "옳바르지 않은 형식의 토큰입니다", InvalidTokenException.class),
     WRONG_TOKEN(BAD_REQUEST, "잘못된 토큰입니다", WrongTokenException.class),

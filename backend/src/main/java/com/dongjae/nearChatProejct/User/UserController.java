@@ -5,7 +5,10 @@ import com.dongjae.nearChatProejct.Common.Security.JwtTokenProvider;
 import com.dongjae.nearChatProejct.User.Dto.*;
 import com.dongjae.nearChatProejct.User.Service.UserService;
 import com.dongjae.nearChatProejct.User.domain.UserEntity;
+import com.dongjae.nearChatProejct.User.domain.UserLatLotEntity;
+import com.dongjae.nearChatProejct.User.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.h2.engine.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +51,26 @@ public class UserController {
         return ResponseEntity.ok(
                 new UserResponseDto(userService.findByDeviceId(dto.getDeviceId()),200)
         );
+    }
+
+    @PostMapping("/create-coordinate")
+    public ResponseEntity<UserResponseDto> CreateCoordinate(@AuthenticationPrincipal UserEntity user, @RequestBody CreateXYRadiusRequestDto dto){
+        String deviceId = user.getDeviceId();
+        UserEntity userEntity = userService.findByDeviceId(deviceId);
+        UserLatLotEntity userLatLotEntity = UserLatLotEntity.builder().userEntity(userEntity).lat(dto.getLat()).lot(dto.getLot()).radius(dto.getRadius()).build();
+        if(userService.UserCoordinateNotIn(userEntity)){
+            throw new UserNotFoundException();
+        }else{
+            userService.CreateCoordinate(userLatLotEntity);
+        }
+        return ResponseEntity.ok(new UserResponseDto(userEntity, 200));
+    }
+    @PostMapping("/update-coordinate")
+    public ResponseEntity<UserResponseDto> UpdateCoordinate(@AuthenticationPrincipal UserEntity user, @RequestBody CreateXYRadiusRequestDto dto){
+        String deviceId = user.getDeviceId();
+        UserEntity userEntity = userService.findByDeviceId(deviceId);
+        userService.UpdateCoordinate(deviceId, dto.getLat(), dto.getLot());
+        return ResponseEntity.ok(new UserResponseDto(userEntity, 200));
     }
 
 }
