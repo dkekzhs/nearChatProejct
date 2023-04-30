@@ -6,6 +6,7 @@ import com.dongjae.nearChatProejct.User.domain.UserLatLotRepository;
 import com.dongjae.nearChatProejct.User.domain.UserRepository;
 import com.dongjae.nearChatProejct.User.exception.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.el.parser.AstFalse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -64,19 +65,24 @@ public class UserService {
             throw new UserNotFoundException();
         }
     }
-    public void CreateCoordinate(String deviceId, UserLatLotEntity userLatLot){
-        Optional<UserEntity> id = this.userRepository.findByDeviceId(deviceId);
-        if(id.isPresent()){
-            UserLatLotEntity latlot = UserLatLotEntity.builder().userEntity(id.get()).radius(userLatLot.getRadius()).lat(userLatLot.getLat()).lot(userLatLot.getLot()).build();
-            this.userLatLotRepository.save(latlot);
-        }
-        else{
-            throw new UserNotFoundException();
-        }
-
-
-
+    public void CreateCoordinate(UserLatLotEntity userLatLot){
+            this.userLatLotRepository.save(userLatLot);
     }
+    public Optional<UserLatLotEntity> FindByUserLatLotEntity(UserEntity user) {
+        Optional<UserLatLotEntity> byUserEntity_id = this.userLatLotRepository.findByUserEntity_Id(user.getId());
+        if(byUserEntity_id.isPresent()){
+            return byUserEntity_id;
+        }
+        throw new UserNotFoundException();
+    }
+    public boolean UserCoordinateNotIn(UserEntity user) {
+        Optional<UserLatLotEntity> byUserEntity_id = this.userLatLotRepository.findByUserEntity_Id(user.getId());
+        if(byUserEntity_id.isPresent()){
+            return true;
+        }
+        return false;
+    }
+
     public void UpdateCoordinate(String deviceId,Double lat, Double lot){
         Optional<UserEntity> id = this.userRepository.findByDeviceId(deviceId);
         if(id.isPresent()){
@@ -84,6 +90,9 @@ public class UserService {
             if(byuser_idx.isPresent()){
                 byuser_idx.get().UpdateCoordinate(lat, lot);
                 this.userLatLotRepository.save(byuser_idx.get());
+            }
+            else{
+                throw new UserNotFoundException();
             }
         }
         else {

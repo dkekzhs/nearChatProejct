@@ -2,23 +2,16 @@ package com.dongjae.nearChatProejct.Chat.service;
 
 import com.dongjae.nearChatProejct.Chat.domain.ChatRoom;
 import com.dongjae.nearChatProejct.Chat.domain.ChatRoomRepository;
-import com.dongjae.nearChatProejct.Chat.domain.MessageRepository;
-import com.dongjae.nearChatProejct.Chat.dto.UserCoordinateReqeustDto;
+import com.dongjae.nearChatProejct.Chat.exception.ChatRoomCreateException;
 import com.dongjae.nearChatProejct.Chat.exception.ChatRoomNotFoundException;
-import com.dongjae.nearChatProejct.User.domain.UserEntity;
 import com.dongjae.nearChatProejct.User.domain.UserLatLotEntity;
 import com.dongjae.nearChatProejct.User.exception.UserNotFoundException;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -32,10 +25,15 @@ public class ChatRoomService {
     }
 
     public void createRoom(ChatRoom chatRoom) {
-        this.chatRoomRepository.save(chatRoom);
+        try {
+            this.chatRoomRepository.save(chatRoom);
+        }
+        catch (Exception e){
+            throw new ChatRoomCreateException();
+        }
     }
 
-    public List<ChatRoom> searchChatRoom(UserCoordinateReqeustDto dto){
+    public List<ChatRoom> searchChatRoom(UserLatLotEntity dto){
         //radius 는 미터 단
         Double lot = dto.getLot();
         Double lat = dto.getLat();

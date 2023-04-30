@@ -1,5 +1,11 @@
 package com.dongjae.nearChatProejct.Chat.dto;
 
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class ChatRoomsListResponseDto<T> {
     private T data;
     private int status;

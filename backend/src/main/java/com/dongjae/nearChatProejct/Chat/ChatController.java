@@ -5,7 +5,6 @@ import com.dongjae.nearChatProejct.Chat.domain.Message;
 import com.dongjae.nearChatProejct.Chat.dto.ChatRoomsListResponseDto;
 import com.dongjae.nearChatProejct.Chat.dto.RoomRequestDto;
 import com.dongjae.nearChatProejct.Chat.dto.RoomResponseDto;
-import com.dongjae.nearChatProejct.Chat.dto.UserCoordinateReqeustDto;
 import com.dongjae.nearChatProejct.Chat.service.ChatRoomService;
 import com.dongjae.nearChatProejct.Chat.service.MessageService;
 import com.dongjae.nearChatProejct.User.Dto.UserResponseDto;
@@ -36,7 +35,7 @@ public class ChatController {
     public ResponseEntity<RoomResponseDto> createRoom(@AuthenticationPrincipal UserEntity user,
     @RequestBody RoomRequestDto dto) {
         UserEntity id = userService.findById(user.getId());
-        chatRoomService.createRoom(ChatRoom.builder().name(dto.getName()).build());
+        chatRoomService.createRoom(ChatRoom.builder().name(dto.getName()).lat(dto.getLat()).lot(dto.getLot()).build());
         return ResponseEntity.ok(
                 new RoomResponseDto(dto.getName(),200)
         );
@@ -53,9 +52,9 @@ public class ChatController {
     }
 
     @GetMapping("/chatRoomList")
-    public ResponseEntity<ChatRoomsListResponseDto> selectRoom(@AuthenticationPrincipal UserEntity user,
-    @RequestBody UserCoordinateReqeustDto dto){
-        List<ChatRoom> chatRooms = chatRoomService.searchChatRoom(dto);
+    public ResponseEntity<ChatRoomsListResponseDto> selectRoom(@AuthenticationPrincipal UserEntity user){
+        UserLatLotEntity userLatLotEntity = user.getUserLatLotEntity();
+        List<ChatRoom> chatRooms = chatRoomService.searchChatRoom(userLatLotEntity);
         return ResponseEntity.ok(new ChatRoomsListResponseDto<>(chatRooms, 200));
 
     }

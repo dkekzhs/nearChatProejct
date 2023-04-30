@@ -32,14 +32,13 @@ public class ChatRoomTest {
         ChatRoom 채팅방2번 = ChatRoom.builder().name("채팅방2번").lat(1.0).lot(21.0).build();
         ChatRoom 채팅방3번 = ChatRoom.builder().name("채팅방3번").lat(1.0).lot(341.0).build();
         UserEntity userEntity = UserEntity.builder().deviceId("123").name("dads").role(UserRole.USER).build();
-        UserLatLotEntity userLatLotEntity = UserLatLotEntity.builder().lot(1.0).lat(1.0).radius(3).build();
+        UserLatLotEntity userLatLotEntity = UserLatLotEntity.builder().lot(1.0).lat(1.0).radius(3).userEntity(userEntity).build();
 
         userService.CreateUser(userEntity);
-        userService.CreateCoordinate(userEntity.getDeviceId(),userLatLotEntity);
+        userService.CreateCoordinate(userLatLotEntity);
         chatRoomService.createRoom(채팅방1번);
         chatRoomService.createRoom(채팅방2번);
         chatRoomService.createRoom(채팅방3번);
-
 
         List<ChatRoom> chatRooms = chatRoomService.searchChatRoom(userLatLotEntity);
         for (ChatRoom c : chatRooms) {
